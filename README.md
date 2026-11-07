@@ -1,6 +1,6 @@
 # mameshiba
 
-A tiny CLI that prints a random fun fact in a speech bubble, said by a Mameshiba-style bean dog.
+A tiny CLI that prints a random fun fact in a speech bubble, said by a [Mameshiba](https://en.wikipedia.org/wiki/Mameshiba_(franchise))-style bean dog.
 
 ```
  ╭─────────────────────────────────────────╮
