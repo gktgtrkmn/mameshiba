@@ -10,7 +10,10 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
-const factURL = "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en"
+const (
+	factURL  = "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en"
+	greeting = "ねえ、知ってる？\n"
+)
 
 var beanArt = []string{
 	"   ╲",
@@ -86,5 +89,5 @@ func main() {
 	if err != nil {
 		return
 	}
-	fmt.Println(bubble("ねえ、知ってる？\n", fact))
+	fmt.Println(bubble(greeting, fact))
 }
