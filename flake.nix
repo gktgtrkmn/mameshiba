@@ -7,15 +7,17 @@
       forAll = f: nixpkgs.lib.genAttrs systems (s: f nixpkgs.legacyPackages.${s});
     in
     {
-      packages = forAll (pkgs: rec {
-        mameshiba = pkgs.buildGoModule {
-          pname = "mameshiba";
-          version = "0.1.0";
-          src = ./.;
-          vendorHash = null; # standard library only, nothing to vendor
-        };
-        default = mameshiba;
-      });
+      packages = forAll
+        (pkgs: rec {
+          mameshiba = pkgs.buildGoModule
+            {
+              pname = "mameshiba";
+              version = "0.1.0";
+              src = ./.;
+              vendorHash = "sha256-nS+NcnxhwwSDDG7OmgtXauCjgjZQe84WfyjZE3WCUGk=";
+            };
+          default = mameshiba;
+        });
 
       devShells = forAll (pkgs: {
         default = pkgs.mkShell {
