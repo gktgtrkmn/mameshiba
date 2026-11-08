@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -84,10 +86,25 @@ func bubble(greeting, fact string) string {
 	return b.String()
 }
 
+func isTerminal(f *os.File) bool {
+	fi, err := f.Stat()
+	return (err == nil) && (fi.Mode()&os.ModeCharDevice != 0)
+}
+
 func main() {
+	plain := flag.Bool("plain", false, "print only the fact, no bubble")
+	flag.Parse()
+
 	fact, err := fetchFact()
 	if err != nil {
+		fmt.Fprintln(os.Stderr, "could not fetch a fact:", err)
+		os.Exit(1)
+	}
+
+	if *plain || !isTerminal(os.Stdout) {
+		fmt.Println(fact)
 		return
 	}
+
 	fmt.Println(bubble(greeting, fact))
 }

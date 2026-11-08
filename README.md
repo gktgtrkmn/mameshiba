@@ -11,6 +11,13 @@ A tiny CLI that prints a random fun fact in a speech bubble, said by a [Mameshib
    ╲
   (◕ ᴥ ◕ ᗜ   )
 ```
+## Options
+
+```
+mameshiba                # bubble and bean in the terminal
+mameshiba -plain         # only print the fact
+mameshiba | ./other      # only the fact is piped
+```
 
 ## Build and run
 
