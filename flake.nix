@@ -14,7 +14,7 @@
               pname = "mameshiba";
               version = "0.1.0";
               src = ./.;
-              vendorHash = "sha256-nS+NcnxhwwSDDG7OmgtXauCjgjZQe84WfyjZE3WCUGk=";
+              vendorHash = "sha256-nssNEysi9/p+i6IndbEbK6qmDydlrC5Hx/NE+exILE4=";
             };
           default = mameshiba;
         });
