@@ -14,9 +14,11 @@ A tiny CLI that prints a random fun fact in a speech bubble, said by a [Mameshib
 ## Options
 
 ```
-mameshiba                # bubble and bean in the terminal
-mameshiba -plain         # only print the fact
-mameshiba | ./other      # only the fact is piped
+mameshiba                       # bubble and bean in the terminal
+mameshiba -plain                # only print the fact
+mameshiba | ./other             # only the fact is piped
+mameshiba -tui                  # tui mode
+mameshiba -tui -interval=30s    # set the period
 ```
 
 ## Build and run
