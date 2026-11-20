@@ -6,14 +6,12 @@ import (
 	"time"
 )
 
-func liveBubble(greeting, fact string, delay time.Duration) {
-	lines, w := bubbleLines(greeting, fact)
-	height := len(lines) + 2 + len(beanArt)
-	fmt.Println(frame(reveal(lines, 0), w))
-	for n := 1; n <= runeCount(lines); n++ {
+func liveBubble(r liveRenderer, t typing, delay time.Duration) {
+	fmt.Print(r.start(t))
+	for !t.done() {
 		time.Sleep(delay)
-		fmt.Printf("\x1b[%dA", height)
-		fmt.Println(frame(reveal(lines, n), w))
+		t = t.next()
+		fmt.Print(r.step(t))
 	}
 }
 
@@ -31,7 +29,7 @@ func runCLI(fetch func() (string, error), live, plain bool) error {
 	case plain || !isTerminal(os.Stdout):
 		fmt.Println(fact)
 	case live:
-		liveBubble(greeting, fact, typeDelay)
+		liveBubble(cliLive{}, newTyping(greeting, fact), typeDelay)
 	default:
 		fmt.Println(bubble(greeting, fact))
 	}

@@ -19,9 +19,10 @@ type nextMsg struct{ gen int }
 type model struct {
 	fetch         func() (string, error)
 	interval      time.Duration
+	renderer      liveRenderer
 	width, height int
-	fact          string
-	shown         int
+	typing        typing
+	screen        string
 	gen           int
 }
 
@@ -58,14 +59,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.err != nil {
 			return m, nextCmd(m.gen, m.interval)
 		}
-		m.fact, m.shown = msg.fact, 0
+		m.typing = newTyping(greeting, msg.fact)
+		m.screen = m.renderer.start(m.typing)
 		return m, typeCmd(m.gen)
 	case typeMsg:
 		if msg.gen != m.gen {
 			return m, nil
 		}
-		m.shown++
-		if m.shown >= m.total() {
+		m.typing = m.typing.next()
+		m.screen = m.renderer.step(m.typing)
+		if m.typing.done() {
 			return m, nextCmd(m.gen, m.interval)
 		}
 		return m, typeCmd(m.gen)
@@ -77,21 +80,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m model) total() int {
-	lines, _ := bubbleLines(greeting, m.fact)
-	return runeCount(lines)
-}
-
 func (m model) View() string {
-	block := strings.Join(beanArt, "\n")
-	if m.fact != "" {
-		lines, w := bubbleLines(greeting, m.fact)
-		block = frame(reveal(lines, m.shown), w)
+	if m.screen == "" {
+		return place(strings.Join(beanArt, "\n"), m.width, m.height)
 	}
-	return place(block, m.width, m.height)
+	return place(m.screen, m.width, m.height)
 }
 
 func runTUI(fetch func() (string, error), interval time.Duration) error {
-	_, err := tea.NewProgram(model{fetch: fetch, interval: interval}, tea.WithAltScreen()).Run()
+	m := model{fetch: fetch, interval: interval, renderer: tuiLive{}}
+	_, err := tea.NewProgram(m, tea.WithAltScreen()).Run()
 	return err
 }
