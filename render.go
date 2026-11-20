@@ -81,8 +81,11 @@ func runeCount(lines []string) int {
 
 func place(block string, width, height int) string {
 	lines := strings.Split(block, "\n")
-	left := strings.Repeat(" ", max(0, (width-runewidth.StringWidth(beanArt[len(beanArt)-1]))/2))
-	top := max(0, height/2-(len(lines)-len(beanArt)))
+	face := beanArt[len(beanArt)-1]
+	trimmed := strings.TrimLeft(face, " ")
+	indent := runewidth.StringWidth(face) - runewidth.StringWidth(trimmed)
+	left := strings.Repeat(" ", max(0, (width-runewidth.StringWidth(trimmed))/2-indent))
+	top := max(0, (height-1)/2-(len(lines)-1))
 	padded := make([]string, len(lines))
 	for i, l := range lines {
 		padded[i] = left + l
